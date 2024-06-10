@@ -1,0 +1,73 @@
+Sub Courts()
+
+ 
+
+Dim tmp As String
+
+Dim arr() As String
+
+Dim a As Range
+
+ 
+
+Set a = Range("A1:E10")
+
+ 
+
+   For Each cell In a
+
+      If (cell <> "") And (InStr(1, tmp, Trim(cell), 1) = 0) Then
+
+        tmp = tmp & LCase(Trim(cell)) & "|"
+
+      End If
+
+   Next cell
+
+ 
+
+If Len(tmp) > 0 Then tmp = Left(tmp, Len(tmp) - 1)
+
+ 
+
+arr = Split(tmp, "|")
+
+ 
+
+Dim i As Variant, counter, d As String
+
+i = 0
+
+For i = 0 To UBound(arr)
+
+counter = 0
+
+ 
+
+For Each cell In a
+
+If LCase(Trim(cell)) = arr(i) Then
+
+If cell.MergeCells = True Then
+
+    counter = counter + cell.MergeArea.Cells.count
+
+Else:
+
+    counter = counter + 1
+
+    d = cell
+
+End If
+
+End If
+
+Next cell
+
+Cells(11 + i, 1).Value = d
+
+Cells(11 + i, 2).Value = counter 
+
+Next i
+
+End Sub
