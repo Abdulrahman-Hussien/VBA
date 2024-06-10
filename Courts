@@ -1,71 +1,39 @@
 Sub Courts()
-
- 
+'For a courts reserving schedule this code calculates the number of hours of each player has reserved in the current month 
+'and puts the data in a table 
 
 Dim tmp As String
-
 Dim arr() As String
-
 Dim a As Range
+Set a = Range("A1:E10") 'you can use the .CurrentRegion instesd, I knew the range wouldn't change so I left it fixed. 
 
- 
-
-Set a = Range("A1:E10")
-
- 
-
-   For Each cell In a
-
+   For Each cell In a 'This section gets all unique names in one string
       If (cell <> "") And (InStr(1, tmp, Trim(cell), 1) = 0) Then
-
         tmp = tmp & LCase(Trim(cell)) & "|"
-
       End If
-
    Next cell
 
- 
-
-If Len(tmp) > 0 Then tmp = Left(tmp, Len(tmp) - 1)
-
- 
-
+If Len(tmp) > 0 Then tmp = Left(tmp, Len(tmp) - 1) 'Turns the string into array
 arr = Split(tmp, "|")
-
- 
 
 Dim i As Variant, counter, d As String
 
-i = 0
-
 For i = 0 To UBound(arr)
-
 counter = 0
-
- 
-
 For Each cell In a
-
 If LCase(Trim(cell)) = arr(i) Then
-
+'Merged cells represented more than one hour reserved; this part takes this into considration
 If cell.MergeCells = True Then
-
     counter = counter + cell.MergeArea.Cells.count
-
 Else:
-
     counter = counter + 1
-
     d = cell
-
 End If
-
 End If
-
 Next cell
 
+'Names along side with the number of hours reserved in the whole month are put in those cells.
 Cells(11 + i, 1).Value = d
-
 Cells(11 + i, 2).Value = counter 
 
 Next i
